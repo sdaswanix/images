@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <input type="file" />
+    <input type="text"/>
+    <button id="b1">Añadir imagen</button>
+    <button id="b2">Subir</button>
+    <script>
+      let input = document.querySelector('input[type="file"]');
+      let input2 = document.querySelector('input[type="text"]')
+      let button1 = document.querySelector("#b1");
+      let button2 = document.querySelector("#b2");
+
+      button1.addEventListener("click", function () {
+        const image = input.files[0];
+        if (!image) {
+          return;
+        }
+        const form = new FormData();
+        form.append("image", image);
+        fetch("/upload", { method: "POST", body: form });
+      });
+
+      button2.addEventListener("click", function () {
+        fetch("/save", {
+          method: "POST",
+          body: JSON.stringify({ id: input2.value }),
+          headers: { "Content-Type": "application/json" },
+        });
+      });
+    </script>
+  </body>
+</html>
